@@ -5,9 +5,9 @@
 #include "Services/IRequestHandlingService.h"
 #include "Services/IRequestURIParserService.h"
 
-#include "Configuration.h"
-#include "Reply.h"
-#include "Request.h"
+#include "Model/Configuration.h"
+#include "Model/Reply.h"
+#include "Model/Request.h"
 
 #include <boost/bind.hpp>
 #include <vector>
