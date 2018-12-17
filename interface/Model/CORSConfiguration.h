@@ -1,28 +1,29 @@
 #pragma once
 
 #include <set>
+#include <string>
 
+namespace systelab {
+namespace web_server {
 
-namespace systelab { namespace web_server {
+class CORSConfiguration {
+ public:
+  CORSConfiguration();
+  CORSConfiguration(const CORSConfiguration&);
+  virtual ~CORSConfiguration();
 
-	class CORSConfiguration
-	{
-	public:
-		CORSConfiguration();
-		CORSConfiguration(const CORSConfiguration&);
-		virtual ~CORSConfiguration();
+  bool isEnabled() const;
+  void setEnabled(bool enabled);
 
-		bool isEnabled() const;
-		void setEnabled(bool enabled);
+  bool isAllowedOrigin(const std::string&) const;
+  void addAllowedOrigin(const std::string&);
 
-		bool isAllowedOrigin(const std::string&) const;
-		void addAllowedOrigin(const std::string&);
+  CORSConfiguration& operator=(const CORSConfiguration& other);
 
-		CORSConfiguration& operator= (const CORSConfiguration& other);
+ private:
+  bool m_enabled;
+  std::set<std::string> m_allowedOrigins;
+};
 
-	private:
-		bool m_enabled;
-		std::set<std::string> m_allowedOrigins;
-	};
-
-}}
+}  // namespace web_server
+}  // namespace systelab
