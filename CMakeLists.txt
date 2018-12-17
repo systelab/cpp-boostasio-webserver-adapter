@@ -41,7 +41,7 @@ endmacro()
 project(cpp-boostasio-webserver-adapter)
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Call boost configuration macro
