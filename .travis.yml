@@ -1,22 +1,24 @@
 dist: trusty
 language: cpp
-compiler:
-  - g++
-os:
-  - linux
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-7
-      - g++-7
-script:
-  - export CC=gcc-7
-  - export CXX=g++-7
-  
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
+compiler: gcc
+
+before_install:
+  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
+
+install: 
+  - sudo apt-get install -qq g++-6
+  # CMake-3.13.2 install
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
+  - travis_retry wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.13.2/cmake-3.13.2.tar.gz
+  - tar -xvf cmake-3.13.2.tar.gz > /dev/null
+  - mv cmake-3.3.2-Linux-x86_64 cmake-install
+  - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
+  - cd ${TRAVIS_BUILD_DIR}
+
+script:  
+  - cmake --version
 
   # Build main
   - mkdir -p build
