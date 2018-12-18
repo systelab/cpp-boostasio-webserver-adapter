@@ -6,7 +6,7 @@ cd $current_path
 cd boost
 echo ------------------------------------------------------------
 echo Running: git checkout --recurse-submodules tags/boost-1.67.0 
-git checkout --recurse-submodules tags/boost-1.67.0
+git checkout --recurse-submodules tags/boost-1.67.0  &> /dev/null
 
 # Clean compilation directoy
 cd $current_path
