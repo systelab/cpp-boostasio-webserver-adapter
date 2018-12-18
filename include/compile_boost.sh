@@ -6,7 +6,7 @@ cd $current_path
 cd boost
 echo ------------------------------------------------------------
 echo Running: git checkout --recurse-submodules tags/boost-1.67.0 
-git checkout --recurse-submodules tags/boost-1.67.0  &> /dev/null
+git checkout --quiet --recurse-submodules tags/boost-1.67.0
 
 # Clean compilation directoy
 cd $current_path
@@ -16,8 +16,8 @@ rm -rf $bin_path/boost_build
 # Compile boost
 cd boost
 echo -----------------------------------------------------------------------------------
-echo Running: bootstrap.sh --prefix=$bin_path/boost_build --with-libraries=thread system
-./bootstrap.sh --prefix=$bin_path/boost_build --with-libraries=thread system
+echo Running: bootstrap.sh --prefix=$bin_path/boost_build --with-libraries=thread
+./bootstrap.sh --prefix=$bin_path/boost_build --with-libraries=thread
 
 echo ----------------------------------
 echo Running: b2 install / Quiet output
