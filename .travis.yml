@@ -7,7 +7,12 @@ before_install:
   - sudo apt-get update -qq
 
 install: 
-  - sudo apt-get install -qq g++-6
+  - sudo apt-get install -qq g++-5
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
+
+addons: 
+  apt: 
+    packages: libboost-all-dev
 
 script:
   # Build main
