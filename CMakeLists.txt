@@ -45,6 +45,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_CXX_FLAGS -pthread)
 
+find_package (Threads)
+
 # Call boost configuration macro
 boost_setup()
 

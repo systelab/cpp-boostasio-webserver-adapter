@@ -15,4 +15,4 @@ file(GLOB_RECURSE INTERFACE_HDR "${CMAKE_SOURCE_DIR}/interface/*.h")
 
 add_executable(demo ${DEMO_SRC} ${INTERFACE_SRC} ${INTERFACE_HDR})
 
-target_link_libraries(${DEMO} ${CPP_BOOSTASIO_ADAPTER} ${Boost_LIBRARIES})
+target_link_libraries(${DEMO} ${CPP_BOOSTASIO_ADAPTER} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
