@@ -14,7 +14,7 @@ macro(boost_setup)
     set(Boost_NO_BOOST_CMAKE ON)
     set(Boost_DEBUG OFF)
 
-    find_package(Boost 1.67.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+    find_package(Boost 1.67.0 COMPONENTS ${BOOST_COMPONENTS})
     if(Boost_FOUND)
         # Include 'boost' directory
         include_directories(${Boost_INCLUDE_DIR})
@@ -28,7 +28,7 @@ macro(boost_setup)
         endif()
 
         # re-find package to set the Boost_* variables
-        find_package(Boost 1.67.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+        find_package(Boost 1.67.0 COMPONENTS ${BOOST_COMPONENTS})
         if(NOT Boost_FOUND)
             message(FATAL_ERROR "\nSomething went wrong, couldn't find boost after compile it.\n")
         else()
