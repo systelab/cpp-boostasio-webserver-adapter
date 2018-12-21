@@ -52,7 +52,7 @@ boost_setup()
 
 # Include interface
 include_directories(${CMAKE_SOURCE_DIR}/interface)
-include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/cpp-boostasio-webserver-adapter)
 
 # Add src
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
