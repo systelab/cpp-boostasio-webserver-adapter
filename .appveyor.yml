@@ -1,0 +1,36 @@
+version: '1.0.{build}'
+
+image: Visual Studio 2017
+
+platform:
+  - x64
+
+configuration:
+  - Debug
+  - Release
+
+install:
+  - set PATH=%PATH%;%PYTHON%/Scripts/
+  - pip.exe install conan
+  - conan user
+  - conan --version
+
+before_build:
+  - md build
+  - cd build
+  - conan install ..
+  - cmake .. -G "Visual Studio 15 2017 Win64"
+
+build:
+  project: $(APPVEYOR_BUILD_FOLDER)\build\BoostAsioWebServerAdapter.sln
+
+test_script:
+  - ps: cd bin
+  - BoostAsioWebServerAdapterTest.exe --gtest_output=xml:BoostAsioWebServerAdapterTest.xml
+
+after_test:
+  - ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\BoostAsioWebServerAdapterTest.xml))
+
+artifacts:
+  - path: 'build\lib\BoostAsioWebServerAdapter.lib'
+    name: BoostAsioWebServerAdapter.lib
