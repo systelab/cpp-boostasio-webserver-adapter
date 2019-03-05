@@ -1,18 +1,30 @@
 cmake_minimum_required(VERSION 3.2)
 
-# Configure project
-project(cpp-boostasio-webserver-adapter)
+project(BoostAsioWebServerAdapter)
 
+# Configure environment
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(conan.cmake)
-conan_cmake_run(REQUIRES boost/1.67.0@conan/stable
-                BASIC_SETUP
-                BUILD missing)
+# Setup up Google test
+include(ConfigureGoogleTest)
+configure_google_test()
 
-# Include interface
-include_directories(${CMAKE_SOURCE_DIR}/interface)
+# Setup 3rd party libraries through conan
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()	
 
-# Add src
-add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+# Setup extern repositories
+include(GitCloneRepository)
+git_clone_repository(URL https://github.com/systelab/cpp-test-utilities.git     DIR extern/TestUtilities      BRANCH master)
+git_clone_repository(URL https://github.com/systelab/cpp-webserver-adapter.git  DIR extern/WebServerAdapter   BRANCH master)
+
+# Configure include directories
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/test)
+
+# Add subprojects
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/BoostAsioWebServerAdapter)
+#add_subdirectory(${CMAKE_SOURCE_DIR}/test/BoostAsioWebServerAdapterTest)
+add_subdirectory(${CMAKE_SOURCE_DIR}/extern/WebServerAdapter/WebServerAdapterTestUtilities)
