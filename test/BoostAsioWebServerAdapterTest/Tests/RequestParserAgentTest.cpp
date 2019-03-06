@@ -1,12 +1,11 @@
 #include "stdafx.h"
-#include "Webserver/RequestParserAgent.h"
+#include "BoostAsioWebServerAdapter/Agents/RequestParserAgent.h"
 
-#include "Webserver/Request.h"
-#include "SystelabUtils/systelab/utils/boost/BoostTriboolIO.h"
-
-#include "TestUtilities/Comparators/EntityComparator.h"
+#include "WebServerAdapterInterface/Model/Request.h"
+#include "TestUtilitiesInterface/EntityComparator.h"
 
 #include <boost/assign/list_of.hpp>
+#include <boost/optional.hpp>
 
 
 namespace systelab { namespace web_server { namespace unit_test {
@@ -14,7 +13,7 @@ namespace systelab { namespace web_server { namespace unit_test {
 	struct RequestParserAgentTestData
 	{
 		std::string buffer;
-		boost::tribool expectedResult;
+		boost::optional<bool> expectedResult;
 		Request expectedParsedRequest;
 	};
 
