@@ -1,6 +1,7 @@
 #include "WebServicesMgr.h"
 
-#include "WebServerAdapterInterface/IService.h"
+#include "WebServerAdapterInterface/IWebService.h"
+
 
 namespace systelab { namespace web_server {
 
