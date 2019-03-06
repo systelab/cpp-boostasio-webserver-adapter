@@ -1,4 +1,4 @@
-#include "WebServer.h"
+#include "Server.h"
 
 #include "Agents/RequestParserAgent.h"
 #include "Connection.h"
@@ -20,7 +20,7 @@
 
 namespace systelab { namespace web_server {
 
-	WebServer::WebServer(const Configuration& configuration)
+	Server::Server(const Configuration& configuration)
 		:m_configuration(new Configuration(configuration))
 		,m_webServicesMgr(new WebServicesMgr())
 		,m_acceptor(m_io_service)
@@ -29,39 +29,39 @@ namespace systelab { namespace web_server {
 	{
 	}
 
-	WebServer::~WebServer()
+	Server::~Server()
 	{
 		stop();
 	}
 
-	void WebServer::setConfiguration(std::unique_ptr<Configuration> configuration)
+	void Server::setConfiguration(std::unique_ptr<Configuration> configuration)
 	{
 		*m_configuration = *configuration;
 	}
 
-	void WebServer::registerWebService(std::unique_ptr<IWebService> webService)
+	void Server::registerWebService(std::unique_ptr<IWebService> webService)
 	{
 		m_webServicesMgr->addWebService(std::move(webService));
 	}
 
-	bool WebServer::isRunning() const
+	bool Server::isRunning() const
 	{
 		return m_running;
 	}
 
-	void WebServer::start()
+	void Server::start()
 	{
 		openAcceptor();
 
 		unsigned int threadPoolSize = m_configuration->getThreadPoolSize();
 		for (unsigned int i = 0; i < threadPoolSize; i++)
 		{
-			boost::shared_ptr<std::thread> thread(new std::thread(&WebServer::runThread, this));
+			boost::shared_ptr<std::thread> thread(new std::thread(&Server::runThread, this));
 			m_threads.push_back(thread);
 		}
 	}
 
-	void WebServer::stop()
+	void Server::stop()
 	{
 		m_io_service.stop();
 
@@ -73,12 +73,12 @@ namespace systelab { namespace web_server {
 		m_running = false;
 	}
 
-	void WebServer::runThread()
+	void Server::runThread()
 	{
 		m_io_service.run();
 	}
 
-	void WebServer::openAcceptor()
+	void Server::openAcceptor()
 	{
 		std::string hostAddress = m_configuration->getHostAddress();
 
@@ -100,7 +100,7 @@ namespace systelab { namespace web_server {
 		startAcceptor();
 	}
 
-	void WebServer::startAcceptor()
+	void Server::startAcceptor()
 	{
 		std::unique_ptr<IRequestParserAgent> requestParserAgent(new RequestParserAgent());
 		std::unique_ptr<IRequestURIParserService> requestURIParserService(new RequestURIParserService());
@@ -114,10 +114,10 @@ namespace systelab { namespace web_server {
 				std::move(replyBufferBuilderService)));
 
 		m_acceptor.async_accept(m_newConnection->socket(),
-			boost::bind(&WebServer::handleAccept, this, boost::asio::placeholders::error));
+			boost::bind(&Server::handleAccept, this, boost::asio::placeholders::error));
 	}
 
-	void WebServer::handleAccept(const boost::system::error_code& e)
+	void Server::handleAccept(const boost::system::error_code& e)
 	{
 		if (!e)
 		{
