@@ -9,7 +9,7 @@
 #include <boost/assign/list_of.hpp>
 
 
-namespace http { namespace server { namespace unit_test {
+namespace systelab { namespace web_server { namespace unit_test {
 
 	struct RequestParserAgentTestData
 	{
