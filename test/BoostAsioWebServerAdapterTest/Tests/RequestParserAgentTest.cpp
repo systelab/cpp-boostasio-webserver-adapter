@@ -185,11 +185,10 @@ namespace systelab { namespace web_server { namespace unit_test {
 		if (GetParam().expectedResult)
 		{
 			ASSERT_EQ(*GetParam().expectedResult, *result) << "While parsing buffer: " << std::endl << GetParam().buffer;
-		}
-
-		if (result)
-		{
-			ASSERT_TRUE(test_utility::EntityComparator()(GetParam().expectedParsedRequest, parsedRequest));
+			if (*GetParam().expectedResult)
+			{
+				ASSERT_TRUE(test_utility::EntityComparator()(GetParam().expectedParsedRequest, parsedRequest));
+			}
 		}
 	}
 
