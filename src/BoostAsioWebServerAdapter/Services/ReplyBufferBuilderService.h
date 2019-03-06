@@ -1,21 +1,21 @@
 #pragma once
 
 #include "IReplyBufferBuilderService.h"
-#include "Model/Reply.h"
+#include "WebServerAdapterInterface/Model/Reply.h"
 
-namespace systelab {
-namespace web_server {
 
-class ReplyBufferBuilderService : public IReplyBufferBuilderService {
- public:
-  ReplyBufferBuilderService();
-  virtual ~ReplyBufferBuilderService();
+namespace systelab { namespace web_server {
 
-  std::string buildBuffer(const Reply&) const;
+	class ReplyBufferBuilderService : public IReplyBufferBuilderService
+	{
+	public:
+		ReplyBufferBuilderService();
+		virtual ~ReplyBufferBuilderService();
 
- private:
-  std::string translateStatusToString(Reply::StatusType) const;
-};
+		std::string buildBuffer(const Reply&) const;
 
-}  // namespace web_server
-}  // namespace systelab
+	private:
+		std::string translateStatusToString(Reply::StatusType) const;
+	};
+
+}}
