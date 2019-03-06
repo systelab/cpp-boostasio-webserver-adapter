@@ -17,7 +17,7 @@ namespace systelab { namespace web_server { namespace unit_test {
 		Request expectedParsedRequest;
 	};
 
-	RequestParserAgentTestData testData[] = 
+	RequestParserAgentTestData testData[] =
 	{
 		// Valid requests
 		{
@@ -27,38 +27,33 @@ namespace systelab { namespace web_server { namespace unit_test {
 			"Content-Length: 19\r\n"
 			"\r\n"
 			"{\"name\": \"MYPANEL\"}",
-			true, Request("PATCH", "/rest/api/panels/1", 1, 1,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Host", "localhost:8080"))
-							(std::make_pair<std::string, std::string>("Content-Type", "application/json"))
-							(std::make_pair<std::string, std::string>("Content-Length", "19")),
-						  19, "{\"name\": \"MYPANEL\"}")
+			true,
+			Request("PATCH", "/rest/api/panels/1", {}, 1, 1,
+					{ {"Host", "localhost:8080"}, {"Content-Type", "application/json"}, {"Content-Length", "19"} },
+					"{\"name\": \"MYPANEL\"}")
 		},
 		{
 			"POST img/design/instrument.png HTTP/123.456\r\n"
 			"\r\n",
-			true, Request("POST", "img/design/instrument.png", 123, 456,
-						  std::vector< std::pair<std::string, std::string> >(),
-						  0, "")
+			true,
+			Request("POST", "img/design/instrument.png", {}, 123, 456, {}, "")
 		},
 		{
 			"DELETE /rest/api/workitems/456 HTTP/1.1\r\n"
 			"Content-Length: invalid\r\n"
 			"\r\n",
-			true, Request("DELETE", "/rest/api/workitems/456", 1, 1,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "invalid")),
-						  0, "")
+			true,
+			Request("DELETE", "/rest/api/workitems/456", {}, 1, 1,
+					{ {"Content-Length", "invalid"} }, "")
 		},
 		{
 			"GET /content/is/trunkated/to/header/length HTTP/1.1\r\n"
 			"Content-Length: 4\r\n"
 			"\r\n"
 			"More content than needed",
-			true, Request("GET", "/content/is/trunkated/to/header/length", 1, 1,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "4")),
-						  4, "More")
+			true,
+			Request("GET", "/content/is/trunkated/to/header/length", {}, 1, 1,
+					{ {"Content-Length", "4"} }, "More")
 		},
 
 		// Valid requests (with UTF-8 content)
@@ -67,40 +62,36 @@ namespace systelab { namespace web_server { namespace unit_test {
 			"Content-Length: 2\r\n"
 			"\r\n"
 			"\xc3\x91", // Ñ
-			true, Request("GET", "/test/utf8/2byte-char", 1, 0,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "2")),
-						  2, "\xc3\x91")
+			true,
+			Request("GET", "/test/utf8/2byte-char", {}, 1, 0,
+					{ {"Content-Length", "2"} }, "\xc3\x91")
 		},
 		{
 			"GET /test/utf8/3byte-char HTTP/1.0\r\n"
 			"Content-Length: 3\r\n"
 			"\r\n"
 			"\xe2\xb7\xa3", // Cyrilic letter DE
-			true, Request("GET", "/test/utf8/3byte-char", 1, 0,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "3")),
-						  3, "\xe2\xb7\xa3")
+			true,
+			Request("GET", "/test/utf8/3byte-char", {}, 1, 0,
+					{ {"Content-Length", "3"} }, "\xe2\xb7\xa3")
 		},
 		{
 			"GET /test/utf8/4byte-char HTTP/1.0\r\n"
 			"Content-Length: 4\r\n"
 			"\r\n"
 			"\xf0\x90\x8c\x80", // Old italic letter A
-			true, Request("GET", "/test/utf8/4byte-char", 1, 0,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "4")),
-						  4, "\xf0\x90\x8c\x80")
+			true,
+			Request("GET", "/test/utf8/4byte-char", {}, 1, 0,
+					{ {"Content-Length", "4"} }, "\xf0\x90\x8c\x80")
 		},
 		{
 			"GET /test/utf8/combined HTTP/1.0\r\n"
 			"Content-Length: 10\r\n"
 			"\r\n"
 			"\xf0\x90\x8c\x80\xe2\xb7\xa3\xc3\x91z", // 4 utf-8 chars (one of each byte length: 4, 3, 2 and 1)
-			true, Request("GET", "/test/utf8/combined", 1, 0,
-						  boost::assign::list_of
-							(std::make_pair<std::string, std::string>("Content-Length", "10")),
-						  10, "\xf0\x90\x8c\x80\xe2\xb7\xa3\xc3\x91z")
+			true,
+			Request("GET", "/test/utf8/combined", {}, 1, 0,
+					{ {"Content-Length", "10"} }, "\xf0\x90\x8c\x80\xe2\xb7\xa3\xc3\x91z")
 		},
 
 		// Invalid requests
@@ -140,35 +131,35 @@ namespace systelab { namespace web_server { namespace unit_test {
 		{ "PATCH /rest/api/specimens HTTP/11.2\r\nContent-Length: 10\r\n\r\n\xf0\x90\x8c\x28", false, Request() }, // Invalid 4-byte UTF8 character (in 4th byte)
 
 		// Incomplete (but not invalid) requests
-		{ "", boost::indeterminate, Request() },
-		{ "G", boost::indeterminate, Request() },
-		{ "GET", boost::indeterminate, Request() },
-		{ "GET ", boost::indeterminate, Request() },
-		{ "GET /", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover ", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover H", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HT", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTT", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\n", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nC", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length:", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 1", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n1", boost::indeterminate, Request() },
-		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n123456789", boost::indeterminate, Request() },
+		{ "", boost::none, Request() },
+		{ "G", boost::none, Request() },
+		{ "GET", boost::none, Request() },
+		{ "GET ", boost::none, Request() },
+		{ "GET /", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover ", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover H", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HT", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTT", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\n", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nC", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length:", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 1", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n1", boost::none, Request() },
+		{ "GET /rest/api/instrument/reagentcover HTTP/1.1\r\nContent-Length: 10\r\n\r\n123456789", boost::none, Request() },
 	};
 
 
@@ -188,15 +179,12 @@ namespace systelab { namespace web_server { namespace unit_test {
 	TEST_P(RequestParserAgentTest, testParseBuffer)
 	{
 		Request parsedRequest;
-		boost::tribool result = m_agent->parseBuffer(GetParam().buffer.c_str(), GetParam().buffer.size(), parsedRequest);
+		boost::optional<bool> result = m_agent->parseBuffer(GetParam().buffer.c_str(), GetParam().buffer.size(), parsedRequest);
 
-		if (!boost::indeterminate(GetParam().expectedResult))
+		ASSERT_EQ(GetParam().expectedResult.is_initialized(), result.is_initialized()) << "While parsing buffer: " << std::endl << GetParam().buffer;
+		if (GetParam().expectedResult)
 		{
-			ASSERT_EQ(GetParam().expectedResult, result) << "While parsing buffer: " << std::endl << GetParam().buffer;
-		}
-		else
-		{
-			ASSERT_TRUE(boost::indeterminate(result)) << "While parsing buffer: " << std::endl << GetParam().buffer;
+			ASSERT_EQ(*GetParam().expectedResult, *result) << "While parsing buffer: " << std::endl << GetParam().buffer;
 		}
 
 		if (result)
