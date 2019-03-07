@@ -1,7 +1,7 @@
 #include "ReplyBufferBuilderService.h"
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	ReplyBufferBuilderService::ReplyBufferBuilderService()
 	{
@@ -77,4 +77,4 @@ namespace systelab { namespace web_server {
 		}
 	}
 
-}}
+}}}

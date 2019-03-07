@@ -11,9 +11,12 @@
 
 
 namespace systelab { namespace web_server {
+	class Configuration;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class Connection;
-	class Configuration;
 	class WebServicesMgr;
 
 	class Server : public IServer
@@ -48,5 +51,5 @@ namespace systelab { namespace web_server {
 		boost::shared_ptr<Connection> m_newConnection;
 	};
 
-}}
+}}}
 

@@ -4,7 +4,7 @@
 #include "WebServerAdapterInterface/Model/Reply.h"
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class ReplyBufferBuilderService : public IReplyBufferBuilderService
 	{
@@ -18,4 +18,4 @@ namespace systelab { namespace web_server {
 		std::string translateStatusToString(Reply::StatusType) const;
 	};
 
-}}
+}}}

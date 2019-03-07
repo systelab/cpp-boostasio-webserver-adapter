@@ -18,7 +18,7 @@
 #include <boost/shared_ptr.hpp>
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	Server::Server(const Configuration& configuration)
 		:m_configuration(new Configuration(configuration))
@@ -130,4 +130,4 @@ namespace systelab { namespace web_server {
 		}
 	}
 
-}}
+}}}

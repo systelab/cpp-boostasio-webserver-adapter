@@ -8,7 +8,7 @@
 #include "WebServerAdapterInterface/Model/Request.h"
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	RequestHandlingService::RequestHandlingService(WebServicesMgr& webServicesMgr,
 												   CORSConfiguration& corsConfiguration)
@@ -51,4 +51,4 @@ namespace systelab { namespace web_server {
 		}
 	}
 
-}}
+}}}

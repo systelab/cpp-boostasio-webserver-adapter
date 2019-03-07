@@ -4,10 +4,7 @@
 #include <memory>
 
 
-namespace systelab { namespace web_server {
-
-	class Request;
-	class Reply;
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class RequestURIParserService : public IRequestURIParserService
 	{
@@ -21,5 +18,5 @@ namespace systelab { namespace web_server {
 		void parseQueryString(Request& request) const;
 	};
 
-}}
+}}}
 

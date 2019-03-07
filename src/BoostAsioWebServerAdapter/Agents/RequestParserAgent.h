@@ -4,7 +4,8 @@
 
 #include <string>
 
-namespace systelab { namespace web_server {
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class RequestParserAgent : public IRequestParserAgent
 	{
@@ -62,4 +63,4 @@ namespace systelab { namespace web_server {
 		unsigned int m_contentCharSize;
 	};
 
-}}
+}}}

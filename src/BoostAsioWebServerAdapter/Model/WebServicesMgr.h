@@ -5,8 +5,10 @@
 
 
 namespace systelab { namespace web_server {
-
 	class IWebService;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class WebServicesMgr
 	{
@@ -22,4 +24,4 @@ namespace systelab { namespace web_server {
 		std::vector< std::unique_ptr<IWebService> > m_webServices;
 	};
 
-}}
+}}}

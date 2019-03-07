@@ -5,8 +5,10 @@
 
 
 namespace systelab { namespace web_server {
-
 	class Reply;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class IReplyBufferBuilderService
 	{
@@ -16,5 +18,5 @@ namespace systelab { namespace web_server {
 		virtual std::string buildBuffer(const Reply&) const = 0;
 	};
 
-}}
+}}}
 

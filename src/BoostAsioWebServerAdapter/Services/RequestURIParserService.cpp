@@ -6,7 +6,7 @@
 #include <sstream>
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	RequestURIParserService::RequestURIParserService()
 	{
@@ -100,4 +100,4 @@ namespace systelab { namespace web_server {
 		}
 	}
 
-}}
+}}}

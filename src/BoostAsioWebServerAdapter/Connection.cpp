@@ -13,7 +13,7 @@
 #include <vector>
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	Connection::Connection(boost::asio::io_service& io_service,
 						   std::unique_ptr<IRequestParserAgent> requestParserAgent,
@@ -108,5 +108,5 @@ namespace systelab { namespace web_server {
 		}
 	}
 
-}}
+}}}
 

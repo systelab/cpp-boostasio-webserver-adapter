@@ -4,10 +4,11 @@
 
 
 namespace systelab { namespace web_server {
-
 	class CORSConfiguration;
-	class Request;
-	class Reply;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
+
 	class WebServicesMgr;
 
 	class RequestHandlingService : public IRequestHandlingService
@@ -27,5 +28,5 @@ namespace systelab { namespace web_server {
 		CORSConfiguration& m_corsConfiguration;
 	};
 
-}}
+}}}
 

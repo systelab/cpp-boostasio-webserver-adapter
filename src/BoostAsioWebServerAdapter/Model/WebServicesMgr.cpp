@@ -3,7 +3,7 @@
 #include "WebServerAdapterInterface/IWebService.h"
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	WebServicesMgr::WebServicesMgr()
 		:m_webServices()
@@ -27,4 +27,4 @@ namespace systelab { namespace web_server {
 		m_webServices.push_back(std::move(webService));
 	}
 
-}}
+}}}

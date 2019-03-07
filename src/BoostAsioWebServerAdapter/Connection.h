@@ -10,13 +10,16 @@
 
 
 namespace systelab { namespace web_server {
+	class Reply;
+	class Request;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class IReplyBufferBuilderService;
 	class IRequestHandlingService;
 	class IRequestParserAgent;
 	class IRequestURIParserService;
-	class Reply;
-	class Request;
 
 	class Connection : public boost::enable_shared_from_this<Connection>
 	{
@@ -50,4 +53,4 @@ namespace systelab { namespace web_server {
 		std::unique_ptr<Reply> m_reply;
 	};
 
-}}
+}}}

@@ -4,8 +4,10 @@
 
 
 namespace systelab { namespace web_server {
-
 	class Request;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class IRequestParserAgent
 	{
@@ -17,5 +19,5 @@ namespace systelab { namespace web_server {
 												  Request& parsedRequest) = 0;
 	};
 
-}}
+}}}
 

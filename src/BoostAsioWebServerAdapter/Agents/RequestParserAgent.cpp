@@ -5,7 +5,7 @@
 #include <boost/lexical_cast.hpp>
 
 
-namespace systelab { namespace web_server {
+namespace systelab { namespace web_server { namespace boostasio {
 
 	RequestParserAgent::RequestParserAgent()
 		:m_state(method_start)
@@ -498,4 +498,4 @@ namespace systelab { namespace web_server {
 		return true;
 	}
 
-}}
+}}}

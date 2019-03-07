@@ -2,8 +2,10 @@
 
 
 namespace systelab { namespace web_server {
-
 	class Request;
+}}
+
+namespace systelab { namespace web_server { namespace boostasio {
 
 	class IRequestURIParserService
 	{
@@ -13,5 +15,4 @@ namespace systelab { namespace web_server {
 		virtual bool parse(Request&) const = 0;
 	};
 
-}}
-
+}}}

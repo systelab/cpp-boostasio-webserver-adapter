@@ -8,7 +8,7 @@
 #include <boost/optional.hpp>
 
 
-namespace systelab { namespace web_server { namespace unit_test {
+namespace systelab { namespace web_server { namespace boostasio { namespace unit_test {
 
 	struct RequestParserAgentTestData
 	{
@@ -194,4 +194,4 @@ namespace systelab { namespace web_server { namespace unit_test {
 
 	INSTANTIATE_TEST_CASE_P(WebServer, RequestParserAgentTest, testing::ValuesIn(testData));
 
-}}}
+}}}}
