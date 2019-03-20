@@ -254,7 +254,9 @@ namespace systelab { namespace web_server { namespace boostasio {
 			case header_value:
 				if (input == '\r')
 				{
-					if (m_header.first == "Content-Length")
+					std::string lowerCaseHeader = m_header.first;
+					std::transform(lowerCaseHeader.begin(), lowerCaseHeader.end(), lowerCaseHeader.begin(), ::tolower);
+					if (lowerCaseHeader == "content-length")
 					{
 						try
 						{
