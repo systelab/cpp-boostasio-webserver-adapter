@@ -24,7 +24,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 		BaseServer(const Configuration&);
 		virtual ~BaseServer();
 
-		void setConfiguration(std::unique_ptr<Configuration>);
 		void registerWebService(std::unique_ptr<IWebService>);
 
 		bool isRunning() const;

@@ -9,7 +9,7 @@
 
 #include "WebServerAdapterInterface/IWebService.h"
 #include "WebServerAdapterInterface/Model/Configuration.h"
-#include "WebServerAdapterInterface/Model/SecuredServerCredentials.h"
+#include "WebServerAdapterInterface/Model/SecurityConfiguration.h"
 
 #include <boost/asio/ssl.hpp>
 #include <openssl/x509v3.h>
@@ -21,38 +21,15 @@ namespace systelab { namespace web_server { namespace boostasio {
 	SecuredServer::SecuredServer(const Configuration& configuration)
 		:BaseServer(configuration)
 	{
-		m_context.reset(new SecuredContext(m_io_service));
+		m_context = std::make_unique<SecuredContext>(m_io_service);
+
+		const SecurityConfiguration& securityConfiguration = configuration.getSecurityConfiguration();
+		setHTTPSConfiguration(securityConfiguration);
+		setMutualSSLConfiguration(securityConfiguration);
 	}
 
 	SecuredServer::~SecuredServer() = default;
 
-	void SecuredServer::setServerCredentials(std::unique_ptr<SecuredServerCredentials> serverCredentials)
-	{
-		bool certificateResult = m_context->setServerCertificate(serverCredentials->getCertificate());
-		bool privateKeyResult = m_context->setServerPrivateKey(serverCredentials->getPrivateKey());
-		bool dhParamResult = m_context->setServerDHParam(serverCredentials->getDHParam());
-		bool result = certificateResult && privateKeyResult && dhParamResult;
-
-		if(!result)
-		{
-			throw Exception("Error setting server credentials");
-		}
-	}
-
-	void SecuredServer::setClientCertificate(const std::string& clientCertifcate)
-	{
-		bool result = m_context->setClientCertificate(clientCertifcate);
-		if (!result)
-		{
-			throw Exception("Error setting client credentials");
-		}
-	}
-
-	void SecuredServer::setConfiguration(std::unique_ptr<Configuration> configuration)
-	{
-		BaseServer::setConfiguration(std::move(configuration));
-	}
-	
 	void SecuredServer::registerWebService(std::unique_ptr<IWebService> webService)
 	{
 		BaseServer::registerWebService(std::move(webService));
@@ -71,6 +48,31 @@ namespace systelab { namespace web_server { namespace boostasio {
 	void SecuredServer::stop()
 	{
 		BaseServer::stop();
+	}
+
+	void SecuredServer::setHTTPSConfiguration(const SecurityConfiguration& securityConfiguration)
+	{
+		bool certificateResult = m_context->setServerCertificate(securityConfiguration.getServerCertificate());
+		bool privateKeyResult = m_context->setServerPrivateKey(securityConfiguration.getServerPrivateKey());
+		bool dhParamResult = m_context->setServerDHParam(securityConfiguration.getServerDHParam());
+		bool result = certificateResult && privateKeyResult && dhParamResult;
+
+		if (!result)
+		{
+			throw Exception("Error setting server credentials");
+		}
+	}
+
+	void SecuredServer::setMutualSSLConfiguration(const SecurityConfiguration& securityConfiguration)
+	{
+		if (securityConfiguration.isMutualSSLEnabled())
+		{
+			bool result = m_context->setClientCertificate(securityConfiguration.getClientCertificate());
+			if (!result)
+			{
+				throw Exception("Error setting client credentials");
+			}
+		}
 	}
 
 	boost::shared_ptr<IConnection> SecuredServer::buildConnection()

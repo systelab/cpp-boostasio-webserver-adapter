@@ -34,11 +34,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 		stop();
 	}
 
-	void BaseServer::setConfiguration(std::unique_ptr<Configuration> configuration)
-	{
-		*m_configuration = *configuration;
-	}
-
 	void BaseServer::registerWebService(std::unique_ptr<IWebService> webService)
 	{
 		m_webServicesMgr->addWebService(std::move(webService));

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "BaseServer.h"
-#include "WebServerAdapterInterface/ISecuredServer.h"
+#include "WebServerAdapterInterface/IServer.h"
 
 
 namespace systelab { namespace web_server {
 	class IWebService;
-	class SecuredServerCredentials;
+	class SecurityConfiguration;
 }}
 
 namespace systelab { namespace web_server { namespace boostasio {
@@ -14,17 +14,13 @@ namespace systelab { namespace web_server { namespace boostasio {
 	class IConnection;
 	class SecuredContext;
 
-	class SecuredServer : public ISecuredServer
+	class SecuredServer : public IServer
 						, public BaseServer
 	{
 	public:
 		SecuredServer(const Configuration&);
 		virtual ~SecuredServer();
 
-		void setServerCredentials(std::unique_ptr<SecuredServerCredentials>);
-		void setClientCertificate(const std::string&);
-
-		virtual void setConfiguration(std::unique_ptr<Configuration>);
 		virtual void registerWebService(std::unique_ptr<IWebService>);
 
 		virtual bool isRunning() const;
@@ -32,15 +28,13 @@ namespace systelab { namespace web_server { namespace boostasio {
 		virtual void stop();
 
 	protected:
+		void setHTTPSConfiguration(const SecurityConfiguration&);
+		void setMutualSSLConfiguration(const SecurityConfiguration&);
 		boost::shared_ptr<IConnection> buildConnection();
 
 	private:
 		std::unique_ptr<SecuredContext> m_context;
 	};
-
-	namespace ex
-	{
-	}
 
 }}}
 
