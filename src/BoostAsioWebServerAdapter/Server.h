@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BaseServer.h"
 #include "WebServerAdapterInterface/IServer.h"
 
 #include <string>
@@ -16,10 +17,11 @@ namespace systelab { namespace web_server {
 
 namespace systelab { namespace web_server { namespace boostasio {
 
-	class Connection;
+	class IConnection;
 	class WebServicesMgr;
 
-	class Server : public IServer
+	class Server : public BaseServer
+				 , public IServer
 	{
 	public:
 		Server(const Configuration&);
@@ -32,23 +34,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 		void start();
 		void stop();
 
-	private:
-		void runThread();
-
-		void openAcceptor();
-		void startAcceptor();
-		void handleAccept(const boost::system::error_code&);
-
 	protected:
-		std::unique_ptr<Configuration> m_configuration;
-		std::unique_ptr<WebServicesMgr> m_webServicesMgr;
-
-		boost::asio::io_service m_io_service;
-		boost::asio::ip::tcp::acceptor m_acceptor;
-		std::vector<boost::shared_ptr<std::thread> > m_threads;
-		bool m_running;
-
-		boost::shared_ptr<Connection> m_newConnection;
+		boost::shared_ptr<IConnection> buildConnection();
 	};
 
 }}}

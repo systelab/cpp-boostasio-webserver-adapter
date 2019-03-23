@@ -1,12 +1,9 @@
 #pragma once
 
+#include "IConnection.h"
+
 #include <boost/array.hpp>
-#include <boost/asio.hpp>
-#include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/noncopyable.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio/stream_socket_service.hpp>
+#include <boost/asio/ssl.hpp>
 
 
 namespace systelab { namespace web_server {
@@ -16,31 +13,36 @@ namespace systelab { namespace web_server {
 
 namespace systelab { namespace web_server { namespace boostasio {
 
+	typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> ssl_socket;
+
 	class IReplyBufferBuilderService;
 	class IRequestHandlingService;
 	class IRequestParserAgent;
 	class IRequestURIParserService;
 
-	class Connection : public boost::enable_shared_from_this<Connection>
+	class SecuredConnection : public IConnection
+							, public boost::enable_shared_from_this<SecuredConnection>
 	{
 	public:
-		Connection(boost::asio::io_service&,
-				   std::unique_ptr<IRequestParserAgent>,
-				   std::unique_ptr<IRequestURIParserService>,
-				   std::unique_ptr<IRequestHandlingService>,
-				   std::unique_ptr<IReplyBufferBuilderService>);
-		virtual ~Connection();
+		SecuredConnection(boost::asio::io_service&,
+						  boost::asio::ssl::context&,
+						  std::unique_ptr<IRequestParserAgent>,
+						  std::unique_ptr<IRequestURIParserService>,
+						  std::unique_ptr<IRequestHandlingService>,
+						  std::unique_ptr<IReplyBufferBuilderService>);
+		virtual ~SecuredConnection();
 
 		void start();
 		boost::asio::basic_socket<boost::asio::ip::tcp>& socket();
 
 	private:
-		void handleRead(const boost::system::error_code&, std::size_t bytes_transferred);
-		void handleWrite(const boost::system::error_code&);
+		void handleHandshake(const boost::system::error_code& error);
+		void handleRead(const boost::system::error_code& e, std::size_t bytes_transferred);
+		void handleWrite(const boost::system::error_code& e);
 
 	private:
 		boost::asio::io_service::strand m_strand;
-		boost::asio::ip::tcp::socket m_socket;
+		ssl_socket m_socket;
 		boost::array<char, 8192> m_requestBuffer;
 		std::string m_replyBuffer;
 
@@ -54,3 +56,4 @@ namespace systelab { namespace web_server { namespace boostasio {
 	};
 
 }}}
+
