@@ -77,7 +77,8 @@ Initialize this libraryr by creating an instance of the `systelab::web_server::b
 ```cpp
 #include "BoostAsioWebServerAdapter/ServerFactory.h"
 
-std::unique_ptr<systelab::web_server::IServerFactory> serverFactory = std::make_unique<systelab::web_server::boostasio::ServerFactory>();
+std::unique_ptr<systelab::web_server::IServerFactory> serverFactory = 
+    std::make_unique<systelab::web_server::boostasio::ServerFactory>();
 ```
 
 Use the `systelab::web_server::IServerFactory` interface of the created object to access to the web server features as described on [C++ Web Server Adapter](https://github.com/systelab/cpp-webserver-adapter) documentation.
