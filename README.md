@@ -72,49 +72,13 @@ target_link_libraries(${MY_PROJECT} ${CONAN_LIBS})
 
 ## Usage
 
-### HTTP server
-
-Set up a new HTTP web server by providing a configuration object that specifies host address and port:
+Initialize this libraryr by creating an instance of the `systelab::web_server::boostasio::ServerFactory` class:
 
 ```cpp
-systelab::web_server::Configuration configuration;
-configuration.setHostAddress("127.0.0.1");
-configuration.setPort(8080);
+#include "BoostAsioWebServerAdapter/ServerFactory.h"
 
-std::unique_ptr<systelab::web_server::IWebServer> webServer =
-    std::make_unique<systelab::web_server::boostasio::WebServer>(configuration);
+std::unique_ptr<systelab::web_server::IServerFactory> serverFactory = 
+    std::make_unique<systelab::web_server::boostasio::ServerFactory>();
 ```
 
-Then, register at least a web service by providing an instance of a class that implements the `systelab::web_server::IWebService` interface:
-
-```cpp
-class MyWebService : public systelab::web_server::IWebService
-{
-    std::unique_ptr<systelab::web_server::Reply> execute(const systelab::web_server::Request& request)
-    {
-        std::unique_ptr<systelab::web_server::Reply> reply;
-	
-        if (canServiceHandleRequest(request))
-        {
-	     // Process request and build a reply
-        }
-	
-        return reply;
-    }
-}
-
-auto webService = std::make_unique<MyWebService>();
-webServer->registerWebService(std::move(webService));
-```
-
-Finally, start the server calling the `start()` method:
-
-```cpp
-webServer->start();
-```
-
-See documentation of [C++ Web Server Adapter](https://github.com/systelab/cpp-webserver-adapter) for additional configuration options or for further details about how to implement a web service.
-
-### HTTPS server
-
-`Not available yet`
+Use the `systelab::web_server::IServerFactory` interface of the created object to access to the web server features as described on [C++ Web Server Adapter](https://github.com/systelab/cpp-webserver-adapter) documentation.
