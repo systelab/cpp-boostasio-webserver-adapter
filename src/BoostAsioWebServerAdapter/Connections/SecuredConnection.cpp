@@ -33,6 +33,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 	{
 	}
 
+	SecuredConnection::~SecuredConnection() = default;
+
 	boost::asio::basic_socket<boost::asio::ip::tcp>& SecuredConnection::socket()
 	{
 		return m_socket.lowest_layer();
