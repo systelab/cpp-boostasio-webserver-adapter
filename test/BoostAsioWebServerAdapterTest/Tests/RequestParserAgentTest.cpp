@@ -6,6 +6,7 @@
 
 #include <boost/assign/list_of.hpp>
 #include <boost/optional.hpp>
+#include <memory>
 
 
 namespace systelab { namespace web_server { namespace boostasio { namespace unit_test {
