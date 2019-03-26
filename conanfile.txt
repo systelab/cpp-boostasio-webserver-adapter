@@ -8,3 +8,8 @@ cmake
 [options]
 OpenSSL:shared=True
 boost:shared=True
+
+[imports]
+bin, *.dll -> ./bin
+lib, *.dylib* -> ./bin
+lib, *.so* -> ./bin
