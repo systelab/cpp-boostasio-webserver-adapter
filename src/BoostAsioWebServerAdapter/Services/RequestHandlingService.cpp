@@ -59,8 +59,36 @@ namespace systelab { namespace web_server { namespace boostasio {
 				}
 				exposedHeadersStr += exposedHeader;
 			}
-
 			reply.addHeader("Access-Control-Expose-Headers", exposedHeadersStr);
+
+			std::string allowedHeadersStr = "";
+			std::set<std::string> allowedHeaders = m_corsConfiguration.getAllowedHeaders();
+			for (auto allowedHeader : allowedHeaders)
+			{
+				if (allowedHeadersStr != "")
+				{
+					allowedHeadersStr += ",";
+				}
+				allowedHeadersStr += allowedHeader;
+			}
+
+			reply.addHeader("Access-Control-Allow-Headers", exposedHeadersStr);
+
+			std::string allowedMethodsStr = "";
+			std::set<std::string> allowedMethods = m_corsConfiguration.getAllowedHeaders();
+			for (auto allowedMethod : allowedMethods)
+			{
+				if (allowedMethodsStr != "")
+				{
+					allowedMethodsStr += ",";
+				}
+				allowedMethodsStr += allowedMethod;
+			}
+
+			reply.addHeader("Access-Control-Allow-Methods", allowedMethodsStr);
+			reply.addHeader("Access-Control-Allow-Credentials", m_corsConfiguration.areAllowedCredentials() ? "true" : "false");
+			reply.addHeader("Access-Control-Max-Age", std::to_string(m_corsConfiguration.getMaxAge()));
+
 		}
 	}
 
