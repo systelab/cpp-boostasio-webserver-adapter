@@ -48,6 +48,19 @@ namespace systelab { namespace web_server { namespace boostasio {
 			{
 				reply.addHeader("Access-Control-Allow-Origin", origin);
 			}
+
+			std::string exposedHeadersStr = "";
+			std::set<std::string> exposedHeaders = m_corsConfiguration.getExposedHeaders();
+			for (auto exposedHeader : exposedHeaders)
+			{
+				if (exposedHeadersStr != "")
+				{
+					exposedHeadersStr += ",";
+				}
+				exposedHeadersStr += exposedHeader;
+			}
+
+			reply.addHeader("Access-Control-Expose-Headers", exposedHeadersStr);
 		}
 	}
 
