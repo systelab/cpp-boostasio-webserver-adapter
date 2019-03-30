@@ -51,10 +51,10 @@ script:
   - conan install ..
   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - make
-  - if [ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]; then make BoostAsioWebServerAdapterTestCoverage; fi
+  - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then make BoostAsioWebServerAdapterTestCoverage; fi
   - cd test
   - cd BoostAsioWebServerAdapterTest
   - ctest
 
 after_success:
-  - if [ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]; bash <(curl -s https://codecov.io/bash); fi
+  - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; bash <(curl -s https://codecov.io/bash); fi
