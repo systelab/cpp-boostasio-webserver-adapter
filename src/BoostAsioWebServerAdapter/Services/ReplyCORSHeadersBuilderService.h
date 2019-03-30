@@ -3,6 +3,8 @@
 #include "IReplyCORSHeadersBuilderService.h"
 
 #include <set>
+#include <string>
+
 
 namespace systelab { namespace web_server {
 	class CORSConfiguration;
