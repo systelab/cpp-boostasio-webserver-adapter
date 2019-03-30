@@ -48,6 +48,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 				return "HTTP/1.0 202 Accepted";
 			case Reply::StatusType::NO_CONTENT:
 				return "HTTP/1.0 204 No Content";
+			case Reply::StatusType::MULTI_STATUS:
+				return "HTTP/1.0 207 Multi-Status";
 			case Reply::StatusType::MULTIPLE_CHOICES:
 				return "HTTP/1.0 300 Multiple Choices";
 			case Reply::StatusType::MOVED_PERMANENTLY:
@@ -64,6 +66,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 				return "HTTP/1.0 403 Forbidden";
 			case Reply::StatusType::NOT_FOUND:
 				return "HTTP/1.0 404 Not Found";
+			case Reply::StatusType::REQUEST_TIMEOUT:
+				return "HTTP/1.0 408 Request Timeout";
 			case Reply::StatusType::INTERNAL_SERVER_ERROR:
 				return "HTTP/1.0 500 Internal Server Error";
 			case Reply::StatusType::NOT_IMPLEMENTED:
