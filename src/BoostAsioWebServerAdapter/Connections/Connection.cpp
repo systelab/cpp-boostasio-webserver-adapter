@@ -2,6 +2,7 @@
 
 #include "Agents/IRequestParserAgent.h"
 #include "Services/IReplyBufferBuilderService.h"
+#include "Services/IReplyCORSHeadersBuilderService.h"
 #include "Services/IRequestHandlingService.h"
 #include "Services/IRequestURIParserService.h"
 
@@ -19,6 +20,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 						   std::unique_ptr<IRequestParserAgent> requestParserAgent,
 						   std::unique_ptr<IRequestURIParserService> requestURIParserService,
 						   std::unique_ptr<IRequestHandlingService> requestHandlingService,
+						   std::unique_ptr<IReplyCORSHeadersBuilderService> replyCORSHeadersBuilderService,
 						   std::unique_ptr<IReplyBufferBuilderService> replyBuffersBuilderService)
 		:m_strand(io_service)
 		,m_socket(io_service)
@@ -28,6 +30,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 		,m_requestURIParserService(std::move(requestURIParserService))
 		,m_requestHandlingService(std::move(requestHandlingService))
 		,m_replyBufferBuilderService(std::move(replyBuffersBuilderService))
+		,m_replyCORSHeadersBuilderService(std::move(replyCORSHeadersBuilderService))
 		,m_request()
 		,m_reply()
 	{
@@ -83,6 +86,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 					m_reply.reset(new Reply());
 					m_reply->setStatus(Reply::BAD_REQUEST);
 				}
+
+				m_replyCORSHeadersBuilderService->addCORSHeaders(*m_request, *m_reply);
 
 				m_replyBuffer = m_replyBufferBuilderService->buildBuffer(*m_reply);
 

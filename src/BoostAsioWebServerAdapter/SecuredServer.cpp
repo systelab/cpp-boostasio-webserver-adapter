@@ -4,6 +4,7 @@
 #include "Agents/RequestParserAgent.h"
 #include "Connections/SecuredConnection.h"
 #include "Services/ReplyBufferBuilderService.h"
+#include "Services/ReplyCORSHeadersBuilderService.h"
 #include "Services/RequestHandlingService.h"
 #include "Services/RequestURIParserService.h"
 
@@ -81,13 +82,14 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 		auto requestParserAgent = std::make_unique<RequestParserAgent>();
 		auto requestURIParserService = std::make_unique<RequestURIParserService>();
-		auto requestHandlingService = std::make_unique<RequestHandlingService>(*m_webServicesMgr, corsConfiguration);
+		auto requestHandlingService = std::make_unique<RequestHandlingService>(*m_webServicesMgr);
+		auto replyCORSHeadersBuilderService = std::make_unique<ReplyCORSHeadersBuilderService>(corsConfiguration);
 		auto replyBufferBuilderService = std::make_unique<ReplyBufferBuilderService>();
 
 		return boost::shared_ptr<IConnection>(
 					new SecuredConnection(m_io_service, *(m_context.get()), std::move(requestParserAgent),
 										  std::move(requestURIParserService), std::move(requestHandlingService),
-										  std::move(replyBufferBuilderService)) );
+										  std::move(replyCORSHeadersBuilderService), std::move(replyBufferBuilderService)) );
 	}
 
 }}}

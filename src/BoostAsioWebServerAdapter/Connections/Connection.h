@@ -19,6 +19,7 @@ namespace systelab { namespace web_server {
 namespace systelab { namespace web_server { namespace boostasio {
 
 	class IReplyBufferBuilderService;
+	class IReplyCORSHeadersBuilderService;
 	class IRequestHandlingService;
 	class IRequestParserAgent;
 	class IRequestURIParserService;
@@ -31,6 +32,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 				   std::unique_ptr<IRequestParserAgent>,
 				   std::unique_ptr<IRequestURIParserService>,
 				   std::unique_ptr<IRequestHandlingService>,
+				   std::unique_ptr<IReplyCORSHeadersBuilderService>,
 				   std::unique_ptr<IReplyBufferBuilderService>);
 		virtual ~Connection();
 
@@ -50,6 +52,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 		std::unique_ptr<IRequestParserAgent> m_requestParserAgent;
 		std::unique_ptr<IRequestURIParserService> m_requestURIParserService;
 		std::unique_ptr<IRequestHandlingService> m_requestHandlingService;
+		std::unique_ptr<IReplyCORSHeadersBuilderService> m_replyCORSHeadersBuilderService;
 		std::unique_ptr<IReplyBufferBuilderService> m_replyBufferBuilderService;
 
 		std::unique_ptr<Request> m_request;
