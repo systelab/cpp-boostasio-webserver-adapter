@@ -3,10 +3,6 @@
 #include "IRequestHandlingService.h"
 
 
-namespace systelab { namespace web_server {
-	class CORSConfiguration;
-}}
-
 namespace systelab { namespace web_server { namespace boostasio {
 
 	class WebServicesMgr;
@@ -14,18 +10,13 @@ namespace systelab { namespace web_server { namespace boostasio {
 	class RequestHandlingService : public IRequestHandlingService
 	{
 	public:
-		RequestHandlingService(WebServicesMgr&,
-							   CORSConfiguration&);
+		RequestHandlingService(WebServicesMgr&);
 		virtual ~RequestHandlingService();
 
 		std::unique_ptr<Reply> processRequest(const Request&) const;
 
 	private:
-		void addCORSHeaders(const Request& request, Reply& reply) const;
-
-	private:
 		WebServicesMgr& m_webServicesMgr;
-		CORSConfiguration& m_corsConfiguration;
 	};
 
 }}}

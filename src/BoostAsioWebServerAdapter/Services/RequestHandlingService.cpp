@@ -7,13 +7,15 @@
 #include "WebServerAdapterInterface/Model/Reply.h"
 #include "WebServerAdapterInterface/Model/Request.h"
 
+#include <algorithm>
+#include <iterator>
+#include <sstream>
+
 
 namespace systelab { namespace web_server { namespace boostasio {
 
-	RequestHandlingService::RequestHandlingService(WebServicesMgr& webServicesMgr,
-												   CORSConfiguration& corsConfiguration)
+	RequestHandlingService::RequestHandlingService(WebServicesMgr& webServicesMgr)
 		:m_webServicesMgr(webServicesMgr)
-		,m_corsConfiguration(corsConfiguration)
 	{
 	}
 
@@ -28,7 +30,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 			std::unique_ptr<Reply> reply = webService->process(request);
 			if (reply)
 			{
-				addCORSHeaders(request, *reply);
 				return std::move(reply);
 			}
 		}
@@ -36,60 +37,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 		std::unique_ptr<Reply> notFoundReply(new Reply());
 		notFoundReply->setStatus(Reply::NOT_FOUND);
 		return std::move(notFoundReply);
-	}
-
-	void RequestHandlingService::addCORSHeaders(const Request& request,
-												Reply& reply) const
-	{
-		if (m_corsConfiguration.isEnabled() && request.getHeaders().hasHeader("Origin"))
-		{
-			std::string origin = request.getHeaders().getHeader("Origin");
-			if (m_corsConfiguration.isAllowedOrigin(origin))
-			{
-				reply.addHeader("Access-Control-Allow-Origin", origin);
-			}
-
-			std::string exposedHeadersStr = "";
-			std::set<std::string> exposedHeaders = m_corsConfiguration.getExposedHeaders();
-			for (auto exposedHeader : exposedHeaders)
-			{
-				if (exposedHeadersStr != "")
-				{
-					exposedHeadersStr += ",";
-				}
-				exposedHeadersStr += exposedHeader;
-			}
-			reply.addHeader("Access-Control-Expose-Headers", exposedHeadersStr);
-
-			std::string allowedHeadersStr = "";
-			std::set<std::string> allowedHeaders = m_corsConfiguration.getAllowedHeaders();
-			for (auto allowedHeader : allowedHeaders)
-			{
-				if (allowedHeadersStr != "")
-				{
-					allowedHeadersStr += ",";
-				}
-				allowedHeadersStr += allowedHeader;
-			}
-
-			reply.addHeader("Access-Control-Allow-Headers", exposedHeadersStr);
-
-			std::string allowedMethodsStr = "";
-			std::set<std::string> allowedMethods = m_corsConfiguration.getAllowedHeaders();
-			for (auto allowedMethod : allowedMethods)
-			{
-				if (allowedMethodsStr != "")
-				{
-					allowedMethodsStr += ",";
-				}
-				allowedMethodsStr += allowedMethod;
-			}
-
-			reply.addHeader("Access-Control-Allow-Methods", allowedMethodsStr);
-			reply.addHeader("Access-Control-Allow-Credentials", m_corsConfiguration.areAllowedCredentials() ? "true" : "false");
-			reply.addHeader("Access-Control-Max-Age", std::to_string(m_corsConfiguration.getMaxAge()));
-
-		}
 	}
 
 }}}
