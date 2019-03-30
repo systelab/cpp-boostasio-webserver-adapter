@@ -56,7 +56,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 		}
 
 		size_t posDotDot = out.find("..");
-
 		if (posDotDot != std::string::npos)
 		{
 			size_t posQuery = out.find("?");
