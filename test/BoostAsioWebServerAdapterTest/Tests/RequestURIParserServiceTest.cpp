@@ -22,7 +22,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		RequestQueryStrings expectedQueryStrings;
 	};
 
-	RequestURIParserServiceTestData testData[] =
+	RequestURIParserServiceTestData requestURIParserServiceTestData[] =
 	{
 		// Valid URIs
 		{ "/rest/api/users/1",				true,		"/rest/api/users/1",		RequestQueryStrings() },
@@ -93,6 +93,6 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		}
 	}
 
-	INSTANTIATE_TEST_CASE_P(WebServer, RequestURIParserServiceTest, testing::ValuesIn(testData));
+	INSTANTIATE_TEST_CASE_P(WebServer, RequestURIParserServiceTest, testing::ValuesIn(requestURIParserServiceTestData));
 
 }}}}

@@ -18,7 +18,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		Request expectedParsedRequest;
 	};
 
-	RequestParserAgentTestData testData[] =
+	RequestParserAgentTestData requestParserAgentTestData[] =
 	{
 		// Valid requests
 		{
@@ -193,6 +193,6 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		}
 	}
 
-	INSTANTIATE_TEST_CASE_P(WebServer, RequestParserAgentTest, testing::ValuesIn(testData));
+	INSTANTIATE_TEST_CASE_P(WebServer, RequestParserAgentTest, testing::ValuesIn(requestParserAgentTestData));
 
 }}}}

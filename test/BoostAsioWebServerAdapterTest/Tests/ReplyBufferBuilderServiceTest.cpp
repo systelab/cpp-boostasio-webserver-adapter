@@ -15,7 +15,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		std::string expectedBuffer;
 	};
 
-	ReplyBufferBuilderServiceTestData testData[] =
+	ReplyBufferBuilderServiceTestData replyBufferBuilderServiceTestData[] =
 	{
 		{
 			Reply(Reply::OK, { {"Content-Type", "application/json"} }, "{}"),
@@ -134,6 +134,6 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 		ASSERT_EQ(GetParam().expectedBuffer, m_service->buildBuffer(GetParam().reply));
 	}
 
-	INSTANTIATE_TEST_CASE_P(WebServer, ReplyBufferBuilderServiceTest, testing::ValuesIn(testData));
+	INSTANTIATE_TEST_CASE_P(WebServer, ReplyBufferBuilderServiceTest, testing::ValuesIn(replyBufferBuilderServiceTestData));
 
 }}}}
