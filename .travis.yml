@@ -52,7 +52,8 @@ script:
   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - make
   - cd bin
-  - if [ $TRAVIS_OS_NAME == osx ]; then ln -s *.dylib /usr/local/lib; fi
+  - ls
+  - if [ $TRAVIS_OS_NAME == osx ]; then cp *.dylib /usr/local/lib; fi
   - ./BoostAsioWebServerAdapterTest
   - cd ..
   - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then make BoostAsioWebServerAdapterTestCoverage; fi
