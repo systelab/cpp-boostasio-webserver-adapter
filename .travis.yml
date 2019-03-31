@@ -49,12 +49,10 @@ script:
   - mkdir -p build
   - cd build
   - conan install ..
-  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=../install
+  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - make
-  - make install
-  - cd ..
-  - cd install
   - cd bin
+  - if [ $TRAVIS_OS_NAME == osx ]; then ln -s *.dylib /usr/local/lib; fi
   - ./BoostAsioWebServerAdapterTest
   - cd ..
   - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then make BoostAsioWebServerAdapterTestCoverage; fi
