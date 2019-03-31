@@ -49,9 +49,11 @@ script:
   - mkdir -p build
   - cd build
   - conan install ..
-  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=../install
   - make
   - make install
+  - cd ..
+  - cd install
   - cd bin
   - ./BoostAsioWebServerAdapterTest
   - cd ..
