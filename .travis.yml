@@ -53,7 +53,7 @@ script:
   - make
   - cd bin
   - ls
-  - if [ $TRAVIS_OS_NAME == osx ]; then cp *.dylib /usr/local/lib; fi
+  - if [ $TRAVIS_OS_NAME == osx ]; then sudo cp *.dylib /usr/local/lib; fi
   - ./BoostAsioWebServerAdapterTest
   - cd ..
   - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then make BoostAsioWebServerAdapterTestCoverage; fi
