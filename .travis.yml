@@ -49,8 +49,9 @@ script:
   - mkdir -p build
   - cd build
   - conan install ..
-  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_RPATH_USE_LINK_PATH="ON"
+  - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
   - make
+  - make install
   - cd bin
   - ./BoostAsioWebServerAdapterTest
   - cd ..
