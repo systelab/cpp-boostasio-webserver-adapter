@@ -15,7 +15,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 	class ReplyCORSHeadersBuilderService : public IReplyCORSHeadersBuilderService
 	{
 	public:
-		ReplyCORSHeadersBuilderService(CORSConfiguration&);
+		ReplyCORSHeadersBuilderService(const CORSConfiguration&);
 		virtual ~ReplyCORSHeadersBuilderService();
 
 		void addCORSHeaders(const Request&, Reply&) const;
@@ -24,7 +24,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 		std::string getCommaSeparatedList(const std::set<std::string>& items) const;
 
 	private:
-		CORSConfiguration& m_corsConfiguration;
+		const CORSConfiguration& m_corsConfiguration;
 	};
 
 }}}

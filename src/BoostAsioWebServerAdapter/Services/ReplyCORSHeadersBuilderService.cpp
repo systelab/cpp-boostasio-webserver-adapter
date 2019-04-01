@@ -7,7 +7,7 @@
 
 namespace systelab { namespace web_server { namespace boostasio {
 
-	ReplyCORSHeadersBuilderService::ReplyCORSHeadersBuilderService(CORSConfiguration& corsConfiguration)
+	ReplyCORSHeadersBuilderService::ReplyCORSHeadersBuilderService(const CORSConfiguration& corsConfiguration)
 		:m_corsConfiguration(corsConfiguration)
 	{
 	}
