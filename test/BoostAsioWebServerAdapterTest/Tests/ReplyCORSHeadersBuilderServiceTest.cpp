@@ -40,7 +40,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 			CORSConfigurationBuilder()
 				.setEnabled(true).setAllowedCredentials(true).setMaxAge(123456)
 				.getEntity(),
-			"http://127.0.0.1:4200",
+			std::string("http://127.0.0.1:4200"),
 			{
 				{ "Access-Control-Expose-Headers", "" },
 				{ "Access-Control-Allow-Headers", "" },
@@ -55,7 +55,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 				.addAllowedOrigin("*").addExposedHeader("Content-Type")
 				.addAllowedHeader("Authorization").addAllowedMethod("POST")
 				.getEntity(),
-			"http://127.0.0.1:4200",
+			std::string("http://127.0.0.1:4200"),
 			{
 				{ "Access-Control-Allow-Origin", "http://127.0.0.1:4200" },
 				{ "Access-Control-Expose-Headers", "Content-Type" },
@@ -73,7 +73,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 				.addAllowedHeader("Origin").addAllowedHeader("Accept")
 				.addAllowedMethod("GET").addAllowedMethod("POST").addAllowedMethod("DELETE")
 				.getEntity(),
-			"http://127.0.0.1:4200",
+			std::string("http://127.0.0.1:4200"),
 			{
 				{ "Access-Control-Allow-Origin", "http://127.0.0.1:4200" },
 				{ "Access-Control-Expose-Headers", "Authorization,Content-Type" },
@@ -91,7 +91,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 				.addAllowedHeader("Origin").addAllowedHeader("Accept").addAllowedHeader("Authorization").addAllowedHeader("Content-Type")
 				.addAllowedMethod("GET").addAllowedMethod("POST").addAllowedMethod("DELETE").addAllowedMethod("OPTIONS")
 				.getEntity(),
-			"http://127.0.0.1:4200",
+			std::string("http://127.0.0.1:4200"),
 			{
 				{ "Access-Control-Expose-Headers", "Accept,Authorization,Content-Type,Origin" },
 				{ "Access-Control-Allow-Headers", "Accept,Authorization,Content-Type,Origin" },
