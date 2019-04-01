@@ -40,7 +40,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 	void Connection::start()
 	{
-		m_request.reset(new Request());
+		m_request = std::make_unique<Request>();
 		m_reply.reset();
 
 		m_socket.async_read_some(

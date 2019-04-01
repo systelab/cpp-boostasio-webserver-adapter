@@ -45,6 +45,9 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 	void SecuredConnection::start()
 	{
+		m_request = std::make_unique<Request>();
+		m_reply.reset();
+
 		SSL_set_cipher_list(m_socket.native_handle(), "ECDHE-RSA-AES128-GCM-SHA256");
 		SSL_set_ecdh_auto(m_socket.native_handle(), 1);
 
