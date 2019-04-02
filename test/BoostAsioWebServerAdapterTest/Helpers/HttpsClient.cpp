@@ -11,26 +11,36 @@ namespace systelab { namespace web_server { namespace test_utility {
 
 	HttpsClient::HttpsClient(SecurityConfiguration& securityConfiguration,
 							 const std::string& server,
-							 const std::string& port)
+							 const std::string& port,
+							 const std::string& clientPrivateKey)
 		:m_server(server)
 		,m_port(port)
 		,m_io_service()
-		,context_(boost::asio::ssl::context::sslv23)
+		,m_context(boost::asio::ssl::context::sslv23)
 	{
-		context_.set_options(boost::asio::ssl::context::default_workarounds |
-							 boost::asio::ssl::context::no_sslv2 |
-							 boost::asio::ssl::context::no_sslv3 |
-							 boost::asio::ssl::context::no_tlsv1);
+		m_context.set_options(boost::asio::ssl::context::default_workarounds |
+							  boost::asio::ssl::context::no_sslv2 |
+							  boost::asio::ssl::context::no_sslv3 |
+							  boost::asio::ssl::context::no_tlsv1);
 
 		setServerCertificate(securityConfiguration.getServerCertificate());
-		m_socket.reset(new boost::asio::ssl::stream<boost::asio::ip::tcp::socket>(m_io_service, context_));
+
+		if (securityConfiguration.isMutualSSLEnabled())
+		{
+			setClientCertificate(securityConfiguration.getClientCertificate());
+			setClientPrivateKey(clientPrivateKey);
+		}
+
+		m_socket.reset(new boost::asio::ssl::stream<boost::asio::ip::tcp::socket>(m_io_service, m_context));
 	}
 
 	HttpsClient::~HttpsClient() = default;
 
 	bool HttpsClient::setServerCertificate(const std::string& certificate)
 	{
-		context_.set_verify_mode(boost::asio::ssl::context::verify_peer | boost::asio::ssl::context::verify_fail_if_no_peer_cert); // | boost::asio::ssl::context::verify_client_once
+		m_context.set_verify_mode(boost::asio::ssl::context::verify_peer |
+								  boost::asio::ssl::context::verify_fail_if_no_peer_cert);
+								// | boost::asio::ssl::context::verify_client_once
 
 		BIO *cert_mem = BIO_new(BIO_s_mem());
 		BIO_puts(cert_mem, certificate.c_str());
@@ -42,7 +52,7 @@ namespace systelab { namespace web_server { namespace test_utility {
 
 		if (inf)
 		{
-			//X509_LOOKUP *lookup = X509_STORE_add_lookup(context_.native_handle()->cert_store, X509_LOOKUP_file());
+			//X509_LOOKUP *lookup = X509_STORE_add_lookup(m_context.native_handle()->cert_store, X509_LOOKUP_file());
 
 			for (int i = 0; i < sk_X509_INFO_num(inf); i++)
 			{
@@ -50,13 +60,13 @@ namespace systelab { namespace web_server { namespace test_utility {
 
 				if (itmp->x509)
 				{
-					X509_STORE_add_cert(context_.native_handle()->cert_store, itmp->x509);
+					X509_STORE_add_cert(m_context.native_handle()->cert_store, itmp->x509);
 					count++;
 				}
 
 				if (itmp->crl)
 				{
-					X509_STORE_add_crl(context_.native_handle()->cert_store, itmp->crl);
+					X509_STORE_add_crl(m_context.native_handle()->cert_store, itmp->crl);
 					count++;
 				}
 			}
@@ -65,6 +75,43 @@ namespace systelab { namespace web_server { namespace test_utility {
 		}
 
 		return count > 0;
+	}
+
+	bool HttpsClient::setClientCertificate(const std::string& certificate)
+	{
+		bool result = false;
+
+		BIO *bio_mem = BIO_new(BIO_s_mem());
+		BIO_puts(bio_mem, certificate.c_str());
+		X509 * x509 = PEM_read_bio_X509(bio_mem, NULL, NULL, NULL);
+
+		result = SSL_CTX_use_certificate(m_context.native_handle(), x509) == 1;
+
+		BIO_free(bio_mem);
+		X509_free(x509);
+
+		return result;
+	}
+
+	bool HttpsClient::setClientPrivateKey(const std::string& privateKey)
+	{
+		bool result = false;
+
+		BIO *key_mem = BIO_new(BIO_s_mem());
+		BIO_puts(key_mem, privateKey.c_str());
+
+		EVP_PKEY *pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
+												 m_context.native_handle()->default_passwd_callback,
+												 m_context.native_handle()->default_passwd_callback_userdata);
+		if (pkey != NULL)
+		{
+			result = SSL_CTX_use_PrivateKey(m_context.native_handle(), pkey) == 1;
+			EVP_PKEY_free(pkey);
+		}
+
+		BIO_free(key_mem);
+
+		return result;
 	}
 
 	bool HttpsClient::send(std::string path, std::map<std::string, std::string>& headers, std::string& content)

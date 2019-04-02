@@ -13,7 +13,8 @@ namespace systelab { namespace web_server { namespace test_utility {
 	public:
 		HttpsClient(SecurityConfiguration&,
 					const std::string& server,
-					const std::string& port);
+					const std::string& port,
+					const std::string& clientPrivateKey);
 		virtual ~HttpsClient();
 
 		bool send(std::string path, std::map<std::string, std::string>& headers, std::string& content);
@@ -21,6 +22,8 @@ namespace systelab { namespace web_server { namespace test_utility {
 	private:
 		bool receive(std::map<std::string, std::string>& headers, std::string& content);
 		bool setServerCertificate(const std::string& certificate);
+		bool setClientCertificate(const std::string& certificate);
+		bool setClientPrivateKey(const std::string& privateKey);
 
 	private:
 		boost::asio::io_service m_io_service;
@@ -28,7 +31,7 @@ namespace systelab { namespace web_server { namespace test_utility {
 		std::string m_port;
 		std::string m_root;
 		std::unique_ptr<boost::asio::ssl::stream<boost::asio::ip::tcp::socket>> m_socket;
-		boost::asio::ssl::context context_;
+		boost::asio::ssl::context m_context;
 	};
 
 }}}
