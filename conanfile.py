@@ -22,11 +22,13 @@ class BoostAsioWebServerAdapterConan(ConanFile):
         self.copy("*.so*", dst="bin", src="lib")
 
     def package(self):
-        self.copy("ServerFactory.h", dst="include/BoostAsioWebServerAdapter", src="BoostAsioWebServerAdapter")
-        self.copy("*.h", dst="include/WebServerAdapterInterface", src="WebServerAdapterInterface")
-        self.copy("*.h", dst="include/WebServerAdapterTestUtilities", src="WebServerAdapterTestUtilities")
-        self.copy("BoostAsioWebServerAdapter.lib", dst="lib", keep_path=False)
-        self.copy("BoostAsioWebServerAdapter.a", dst="lib", keep_path=False)
+        self.copy("ServerFactory.h", dst="include/BoostAsioWebServerAdapter", src="src/BoostAsioWebServerAdapter")
+        self.copy("*.h", dst="include/WebServerAdapterInterface", src="extern/WebServerAdapter/WebServerAdapterInterface")
+        self.copy("*.inl", dst="include/WebServerAdapterInterface", src="extern/WebServerAdapter/WebServerAdapterInterface")
+        self.copy("*.h", dst="include/WebServerAdapterTestUtilities", src="extern/WebServerAdapter/WebServerAdapterTestUtilities")
+        self.copy("*.lib", dst="lib", src="build/lib", keep_path=False)
+        self.copy("*.pdb", dst="lib", src="build/lib", keep_path=False)
+        self.copy("*.a", dst="build/lib", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
