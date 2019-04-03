@@ -104,10 +104,9 @@ script:
 
 deploy:
   provider: script
-  script: conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray
+  script: if [ "$BUILD_TYPE" == "Release" ] || [ "$BUILD_TYPE" == "Debug" ]; then conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray; fi
   on:
     tags: true
-    condition: $BUILD_TYPE = "Coverage"
 
 after_success:
   - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then bash <(curl -s https://codecov.io/bash); fi
