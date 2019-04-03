@@ -19,4 +19,4 @@ class BoostAsioWebServerAdapterTestConan(ConanFile):
     def test(self):
         if not tools.cross_building(self.settings):
             os.chdir("bin")
-            self.run(".%sRapidJSONAdapterPackageTest" % os.sep)
+            self.run(".%sBoostAsioWebServerAdapterPackageTest" % os.sep)
