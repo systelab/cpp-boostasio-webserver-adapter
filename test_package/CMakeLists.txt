@@ -13,4 +13,4 @@ conan_basic_setup()
 # Configure test package project
 set(BOOSTASIO_WEBSERVER_ADAPTER_PACKAGE_TEST_PROJECT BoostAsioWebServerAdapterPackageTest)
 add_executable(${BOOSTASIO_WEBSERVER_ADAPTER_PACKAGE_TEST_PROJECT} BoostAsioWebServerAdapterExample.cpp)
-target_link_libraries(${BOOSTASIO_WEBSERVER_ADAPTER_PACKAGE_TEST_PROJECT} BoostAsioWebServerAdapter ${CONAN_LIBS})
+target_link_libraries(${BOOSTASIO_WEBSERVER_ADAPTER_PACKAGE_TEST_PROJECT} ${CONAN_LIBS})
