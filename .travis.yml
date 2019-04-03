@@ -101,7 +101,7 @@ script:
 
 deploy:
   provider: script
-  script: if [ "$BUILD_TYPE" == "Release" ] || [ "$BUILD_TYPE" == "Debug" ]; then conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray; fi
+  script: if [ "$BUILD_TYPE" == "Release" ] || [ "$BUILD_TYPE" == "Debug" ]; then conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray --force; fi
   on:
     tags: true
 
