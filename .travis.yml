@@ -53,7 +53,7 @@ matrix:
   - os: osx
     osx_image: xcode10.1
     compiler: clang   
-    env:   
+    env:
       - BUILD_TYPE=Release
       - CONAN_BUILD_TYPE=Release
       - COMPILER_LIBCXX=libc++
@@ -107,7 +107,7 @@ deploy:
   script: conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray
   on:
     tags: true
-    condition: "$BUILD_TYPE" != "Coverage"
+    condition: $BUILD_TYPE = "Coverage"
 
 after_success:
   - if [[ $TRAVIS_OS_NAME == linux && $BUILD_TYPE == Coverage ]]; then bash <(curl -s https://codecov.io/bash); fi
