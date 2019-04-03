@@ -13,6 +13,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     default_options = "OpenSSL:shared=True", "boost:shared=True"
 
     def requirements(self):
+        self.requires("WebServerAdapter/1.0.0@systelab/stable")
         self.requires("boost/1.67.0@conan/stable")
         self.requires("OpenSSL/1.0.2n@conan/stable")
 
@@ -23,9 +24,6 @@ class BoostAsioWebServerAdapterConan(ConanFile):
 
     def package(self):
         self.copy("ServerFactory.h", dst="include/BoostAsioWebServerAdapter", src="src/BoostAsioWebServerAdapter")
-        self.copy("*.h", dst="include/WebServerAdapterInterface", src="extern/WebServerAdapter/WebServerAdapterInterface")
-        self.copy("*.inl", dst="include/WebServerAdapterInterface", src="extern/WebServerAdapter/WebServerAdapterInterface")
-        self.copy("*.h", dst="include/WebServerAdapterTestUtilities", src="extern/WebServerAdapter/WebServerAdapterTestUtilities")
         self.copy("*.lib", dst="lib", src="build/lib", keep_path=False)
         self.copy("*.pdb", dst="lib", src="build/lib", keep_path=False)
         self.copy("*.a", dst="lib", src="build/lib", keep_path=False)
