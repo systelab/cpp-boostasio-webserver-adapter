@@ -8,12 +8,12 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     author = "CSW <csw@werfen.com>"
     topics = ("conan", "web", "server", "http", "ssl", "boost", "asio", "adapter")
     license = "MIT"
-    generators = "cmake"
+    generators = "cmake_find_package"
     settings = "os", "compiler", "build_type", "arch"
     default_options = "OpenSSL:shared=True", "boost:shared=True"
 
     def requirements(self):
-        self.requires("WebServerAdapter/1.0.0@systelab/stable")
+        self.requires("WebServerAdapter/1.0.1@systelab/stable")
         self.requires("boost/1.67.0@conan/stable")
         self.requires("OpenSSL/1.0.2n@conan/stable")
 
