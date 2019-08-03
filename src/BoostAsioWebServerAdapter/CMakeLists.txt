@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.2)
 
+# Find external dependencides
+find_package(boost)
+
 # Configure preprocessor definitions
-add_compile_options(-DBOOST_ALL_DYN_LINK -DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE)
+add_compile_options(-DBOOST_ALL_DYN_LINK)
+add_compile_options(-DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE)
 
 # Add project folder into includes
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -11,7 +15,7 @@ set(BOOST_ASIO_WEB_SERVER_ADAPTER BoostAsioWebServerAdapter)
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_SRC "*.cpp")
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_HDR "*.h")
 add_library(${BOOST_ASIO_WEB_SERVER_ADAPTER} STATIC ${BOOST_ASIO_WEB_SERVER_ADAPTER_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_HDR})
-target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER} ${CONAN_LIBS})
+target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER} boost::boost)
 
 #Configure source groups
 foreach(FILE ${BOOST_ASIO_WEB_SERVER_ADAPTER_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_HDR}) 
