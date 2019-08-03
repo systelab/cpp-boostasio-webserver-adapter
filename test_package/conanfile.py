@@ -1,10 +1,9 @@
 import os
 from conans import ConanFile, CMake, tools
 
-
 class BoostAsioWebServerAdapterTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
+    generators = "cmake_find_package"
 
     def build(self):
         cmake = CMake(self)
@@ -17,6 +16,5 @@ class BoostAsioWebServerAdapterTestConan(ConanFile):
         self.copy('*.so*', dst='bin', src='lib')
 
     def test(self):
-        if not tools.cross_building(self.settings):
-            os.chdir("bin")
-            self.run(".%sBoostAsioWebServerAdapterPackageTest" % os.sep)
+        cmake = CMake(self)
+        cmake.test()
