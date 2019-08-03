@@ -48,8 +48,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 	{
 		openAcceptor();
 
-		unsigned int threadPoolSize = m_configuration->getThreadPoolSize();
-		for (unsigned int i = 0; i < threadPoolSize; i++)
+		size_t threadPoolSize = m_configuration->getThreadPoolSize();
+		for (size_t i = 0; i < threadPoolSize; i++)
 		{
 			boost::shared_ptr<std::thread> thread(new std::thread(&BaseServer::runThread, this));
 			m_threads.push_back(thread);
@@ -60,7 +60,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 	{
 		m_io_service.stop();
 
-		for (unsigned int i = 0; i < m_threads.size(); ++i)
+		for (size_t i = 0; i < m_threads.size(); ++i)
 		{
 			m_threads[i]->join();
 		}
