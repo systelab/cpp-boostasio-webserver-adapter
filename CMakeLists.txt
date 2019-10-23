@@ -14,6 +14,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/test)
 
+# Configure Windows version
+if (WIN32)
+	add_compile_options(-D_WIN32_WINNT=0x0A00)
+endif()
+
 # Add subprojects
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/BoostAsioWebServerAdapter)
 add_subdirectory(${CMAKE_SOURCE_DIR}/test/BoostAsioWebServerAdapterTest)
