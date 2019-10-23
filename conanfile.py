@@ -14,6 +14,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     default_options = {"gtest":"1.8.1", "boost":"1.67.0", "OpenSSL":"1.0.2n"}
 
     def configure(self):
+        self.options["WebServerAdapterTestUtilities"].gtest = self.options.gtest
         self.options["OpenSSL"].shared = True
         self.options["boost"].shared = True
 
@@ -23,6 +24,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
         self.requires(("OpenSSL/%s@conan/stable") % self.options.OpenSSL)
 
     def build_requirements(self):
+        self.requires("WebServerAdapterTestUtilities/1.0.2@systelab/stable")
         if self.options.gtest == "1.7.0":
             self.build_requires("gtest/1.7.0@systelab/stable")
         else:
