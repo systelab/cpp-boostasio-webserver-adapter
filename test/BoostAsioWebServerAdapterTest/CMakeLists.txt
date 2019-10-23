@@ -6,12 +6,16 @@ add_compile_options(-DBOOST_ALL_DYN_LINK -DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAG
 # Add project folder into includes
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Find external dependencides
+find_package(WebServerAdapterTestUtilities)
+find_package(gtest)
+
 # Configure test project
 set(BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT BoostAsioWebServerAdapterTest)
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_SRC "*.cpp")
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_HDR "*.h")
 add_executable(${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT} ${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_HDR})
-target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT} BoostAsioWebServerAdapter WebServerAdapterTestUtilities)
+target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT} BoostAsioWebServerAdapter WebServerAdapterTestUtilities::WebServerAdapterTestUtilities gtest::gtest)
 
 #Configure source groups
 foreach(FILE ${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_TEST_PROJECT_HDR}) 
