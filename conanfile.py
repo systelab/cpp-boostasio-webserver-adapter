@@ -10,12 +10,23 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     license = "MIT"
     generators = "cmake_find_package"
     settings = "os", "compiler", "build_type", "arch"
-    default_options = "OpenSSL:shared=True", "boost:shared=True"
+    options = {"gtest": ["1.7.0", "1.8.1"], "boost": ["1.66.0", "1.67.0"], "OpenSSL": ["1.0.2n"]}
+    default_options = {"gtest":"1.8.1", "boost":"1.67.0", "OpenSSL":"1.0.2n"}
+
+    def configure(self):
+        self.options["OpenSSL"].shared = True
+        self.options["boost"].shared = True
 
     def requirements(self):
-        self.requires("WebServerAdapter/1.0.1@systelab/stable")
-        self.requires("boost/1.67.0@conan/stable")
-        self.requires("OpenSSL/1.0.2n@conan/stable")
+        self.requires("WebServerAdapterInterface/1.0.2@systelab/stable")
+        self.requires(("boost/%s@conan/stable") % self.options.boost)
+        self.requires(("OpenSSL/%s@conan/stable") % self.options.OpenSSL)
+
+    def build_requirements(self):
+        if self.options.gtest == "1.7.0":
+            self.build_requires("gtest/1.7.0@systelab/stable")
+        else:
+            self.build_requires("gtest/1.8.1@bincrafters/stable")
 
     def imports(self):
         self.copy("*.dll", dst=("bin/%s" % self.settings.build_type), src="bin")
