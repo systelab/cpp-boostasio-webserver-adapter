@@ -103,6 +103,7 @@ script:
 
 deploy:
   provider: script
+  skip_cleanup: true
   script: conan upload "BoostAsioWebServerAdapter/${TRAVIS_TAG:1}@systelab/stable" --all -r systelab-bintray --force
   on:
     tags: true
