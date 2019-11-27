@@ -86,7 +86,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 		if (inf)
 		{
-			X509_LOOKUP *lookup = X509_STORE_add_lookup(native_handle()->cert_store, X509_LOOKUP_file());
+			X509_STORE_add_lookup(native_handle()->cert_store, X509_LOOKUP_file());
 
 			for (int i = 0; i < sk_X509_INFO_num(inf); i++)
 			{
