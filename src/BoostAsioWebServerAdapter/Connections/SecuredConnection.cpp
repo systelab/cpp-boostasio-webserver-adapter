@@ -65,11 +65,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 												boost::asio::placeholders::error,
 												boost::asio::placeholders::bytes_transferred)));
 		}
-		else
-		{
-			std::string message = e.message();
-			message = message;
-		}
 	}
 
 	void SecuredConnection::handleRead(const boost::system::error_code& e, std::size_t bytes_transferred)
