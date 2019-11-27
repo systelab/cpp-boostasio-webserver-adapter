@@ -114,11 +114,6 @@ namespace systelab { namespace web_server { namespace boostasio {
 						boost::asio::placeholders::error)));
 			}
 		}
-		else
-		{
-			std::string message = e.message();
-			message = message;
-		}
 	}
 
 	void SecuredConnection::handleWrite(const boost::system::error_code& e)
