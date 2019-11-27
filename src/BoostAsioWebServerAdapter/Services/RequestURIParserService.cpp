@@ -65,7 +65,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 			}
 		}
 
-		bool bad = out.size() <= 0 || out[0] != '/';
+		bool bad = (out.size() == 0) || (out[0] != '/');
 		if (bad)
 		{
 			return false;
