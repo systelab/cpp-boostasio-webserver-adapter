@@ -21,9 +21,8 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 	SecuredServer::SecuredServer(const Configuration& configuration)
 		:BaseServer(configuration)
+		,m_context(std::make_unique<SecuredContext>(m_io_service))
 	{
-		m_context = std::make_unique<SecuredContext>(m_io_service);
-
 		const SecurityConfiguration& securityConfiguration = configuration.getSecurityConfiguration();
 		setHTTPSConfiguration(securityConfiguration);
 		setMutualSSLConfiguration(securityConfiguration);
