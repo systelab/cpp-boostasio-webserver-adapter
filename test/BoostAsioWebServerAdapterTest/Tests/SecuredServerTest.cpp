@@ -153,6 +153,7 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 			m_port = 9999;
 
 			Configuration configuration;
+			configuration.setSingleHostAddress(true);
 			configuration.setHostAddress(m_hostAddress);
 			configuration.setPort(m_port);
 			configuration.setThreadPoolSize(5);

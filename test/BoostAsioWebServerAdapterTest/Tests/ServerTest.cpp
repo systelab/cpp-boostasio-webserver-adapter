@@ -30,11 +30,11 @@ namespace systelab { namespace web_server { namespace boostasio { namespace unit
 
 		void setUpServer()
 		{
-			m_hostAddress = "127.0.0.1";
+			m_hostAddress = "localhost";
 			m_port = 9999;
 
 			Configuration configuration;
-			configuration.setHostAddress(m_hostAddress);
+			configuration.setSingleHostAddress(false);
 			configuration.setPort(m_port);
 			configuration.setThreadPoolSize(5);
 
