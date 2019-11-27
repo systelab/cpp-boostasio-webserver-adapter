@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 	systelab::web_server::boostasio::ServerFactory serverFactory;
 	auto server = serverFactory.buildServer(configuration);
 	std::cout << "Server built on port" << configuration.getPort() << std::endl;
+	std::cout << "Running: " << server->isRunning() << std::endl;
 
     return 0;
 }
