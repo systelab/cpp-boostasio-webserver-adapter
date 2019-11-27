@@ -75,15 +75,25 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 	void BaseServer::openAcceptor()
 	{
+		bool singleHostAddress = m_configuration->hasSingleHostAddress();
 		std::string hostAddress = m_configuration->getHostAddress();
+		unsigned int port = m_configuration->getPort();
 
 		std::stringstream portStream;
-		portStream << m_configuration->getPort();
-		std::string port = portStream.str();
+		portStream << port;
+		std::string portStr = portStream.str();
 
-		boost::asio::ip::tcp::resolver resolver(m_io_service);
-		boost::asio::ip::tcp::resolver::query query(hostAddress, port);
-		boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(query);
+		boost::asio::ip::tcp::endpoint endpoint;
+		if (singleHostAddress)
+		{
+			endpoint = boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port);
+		}
+		else
+		{
+			boost::asio::ip::tcp::resolver resolver(m_io_service);
+			boost::asio::ip::tcp::resolver::query query(hostAddress, portStr);
+			endpoint = *resolver.resolve(query);
+		}
 
 		m_acceptor.open(endpoint.protocol());
 		m_acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
