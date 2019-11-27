@@ -1,4 +1,4 @@
-from conans import ConanFile, tools
+from conans import ConanFile, tools, CMake
 
 class BoostAsioWebServerAdapterConan(ConanFile):
     name = "BoostAsioWebServerAdapter"
@@ -12,6 +12,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"gtest": ["1.7.0", "1.8.1"], "boost": ["1.66.0", "1.67.0"], "OpenSSL": ["1.0.2n"]}
     default_options = {"gtest":"1.8.1", "boost":"1.67.0", "OpenSSL":"1.0.2n"}
+    exports_sources = "*"
 
     def configure(self):
         self.options["WebServerAdapterTestUtilities"].gtest = self.options.gtest
@@ -29,6 +30,11 @@ class BoostAsioWebServerAdapterConan(ConanFile):
             self.build_requires("gtest/1.7.0@systelab/stable")
         else:
             self.build_requires("gtest/1.8.1@bincrafters/stable")
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure(source_folder=".")
+        cmake.build()
 
     def imports(self):
         self.copy("*.dll", dst=("bin/%s" % self.settings.build_type), src="bin")
