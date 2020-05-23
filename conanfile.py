@@ -34,8 +34,10 @@ class BoostAsioWebServerAdapterConan(ConanFile):
         self.build_requires("WebServerAdapterTestUtilities/1.1.4@systelab/stable")
         if self.options.gtest == "1.7.0":
             self.build_requires("gtest/1.7.0@systelab/stable")
-        else:
+        elif self.options.gtest == "1.8.1":
             self.build_requires("gtest/1.8.1@bincrafters/stable")
+        else:
+            self.build_requires("gtest/1.10.0@systelab/stable")
 
     def build(self):
         cmake = CMake(self)
