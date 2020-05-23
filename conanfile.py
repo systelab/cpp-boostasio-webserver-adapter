@@ -10,8 +10,8 @@ class BoostAsioWebServerAdapterConan(ConanFile):
     license = "MIT"
     generators = "cmake_find_package"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"gtest": ["1.7.0", "1.8.1", "1.10.0"], "boost": ["1.66.0", "1.67.0", "1.71.0"], "openssl": ["1.0.2n", "1.0.2s", "1.1.1g"]}
-    default_options = {"gtest":"1.10.0", "boost":"1.71.0", "openssl":"1.1.1g"}
+    options = {"gtest": ["1.7.0", "1.8.1", "1.10.0"], "boost": ["1.66.0", "1.67.0"], "openssl": ["1.0.2n", "1.0.2s", "1.1.1g"]}
+    default_options = {"gtest":"1.10.0", "boost":"1.67.0", "openssl":"1.1.1g"}
     exports_sources = "*"
 
     def configure(self):
@@ -29,6 +29,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
             self.requires("OpenSSL/1.0.2n@conan/stable")
         else:
             self.requires(("openssl/%s") % self.options.openssl)
+            self.requires("zlib/1.2.11")
 
     def build_requirements(self):
         self.build_requires("WebServerAdapterTestUtilities/1.1.4@systelab/stable")
