@@ -60,13 +60,13 @@ namespace systelab { namespace web_server { namespace test_utility {
 
 				if (itmp->x509)
 				{
-					X509_STORE_add_cert(m_context.native_handle()->cert_store, itmp->x509);
+					X509_STORE_add_cert(SSL_CTX_get_cert_store(m_context.native_handle()), itmp->x509);
 					count++;
 				}
 
 				if (itmp->crl)
 				{
-					X509_STORE_add_crl(m_context.native_handle()->cert_store, itmp->crl);
+					X509_STORE_add_crl(SSL_CTX_get_cert_store(m_context.native_handle()), itmp->crl);
 					count++;
 				}
 			}
@@ -100,9 +100,15 @@ namespace systelab { namespace web_server { namespace test_utility {
 		BIO *key_mem = BIO_new(BIO_s_mem());
 		BIO_puts(key_mem, privateKey.c_str());
 
-		EVP_PKEY *pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
+#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
+		EVP_PKEY* pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
+												 SSL_CTX_get_default_passwd_cb(m_context.native_handle()),
+												 SSL_CTX_get_default_passwd_cb_userdata(m_context.native_handle()));
+#else
+		EVP_PKEY* pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
 												 m_context.native_handle()->default_passwd_callback,
 												 m_context.native_handle()->default_passwd_callback_userdata);
+#endif
 		if (pkey != NULL)
 		{
 			result = SSL_CTX_use_PrivateKey(m_context.native_handle(), pkey) == 1;
