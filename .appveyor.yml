@@ -43,7 +43,7 @@ install:
 before_build:
   - md build
   - cd build
-  - conan install .. -s build_type=%CONFIGURATION% -s compiler.toolset=%COMPILER_TOOLSET% -s arch=%ARCH% -o gtest=%GTEST% -o boost=%BOOST% -o openssl=%OPENSSL%
+  - conan install .. -s build_type=%CONFIGURATION% -s compiler.toolset=%COMPILER_TOOLSET% -s arch=%ARCH% -o gtest=%GTEST% -o boost=%BOOST% -o openssl=%OPENSSL% --build missing
   - cmake .. -G "%VISUAL_STUDIO%" -A %PLATFORM%
 
 build:
@@ -66,6 +66,7 @@ artifacts:
     name: BoostAsioWebServerAdapter.lib
 
 deploy_script:
+  - ps: conan upload boost --all -r systelab-bintray --force
   - ps: >- 
       if($env:appveyor_repo_tag -eq 'True') {
         conan upload BoostAsioWebServerAdapter/$env:appveyor_build_version@systelab/stable --all -r systelab-bintray --force
