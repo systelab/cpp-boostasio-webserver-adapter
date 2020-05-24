@@ -8,7 +8,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/asio/stream_socket_service.hpp>
 
 
 namespace systelab { namespace web_server {
