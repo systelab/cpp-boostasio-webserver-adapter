@@ -39,9 +39,16 @@ namespace systelab { namespace web_server { namespace boostasio {
 		BIO *key_mem = BIO_new(BIO_s_mem());
 		BIO_puts(key_mem, privateKey.c_str());
 
-		EVP_PKEY *pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
-										native_handle()->default_passwd_callback,
-										native_handle()->default_passwd_callback_userdata);
+#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
+		EVP_PKEY* pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
+												 SSL_CTX_get_default_passwd_cb(native_handle()),
+												 SSL_CTX_get_default_passwd_cb_userdata(native_handle()));
+#else
+		EVP_PKEY* pkey = PEM_read_bio_PrivateKey(key_mem, NULL,
+												 native_handle()->default_passwd_callback,
+												 native_handle()->default_passwd_callback_userdata);
+#endif
+
 		if (pkey != NULL)
 		{
 			result = SSL_CTX_use_PrivateKey(native_handle(), pkey) == 1;
@@ -86,7 +93,7 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 		if (inf)
 		{
-			X509_STORE_add_lookup(native_handle()->cert_store, X509_LOOKUP_file());
+			X509_STORE_add_lookup(SSL_CTX_get_cert_store(native_handle()), X509_LOOKUP_file());
 
 			for (int i = 0; i < sk_X509_INFO_num(inf); i++)
 			{
@@ -94,13 +101,13 @@ namespace systelab { namespace web_server { namespace boostasio {
 
 				if (itmp->x509)
 				{
-					X509_STORE_add_cert(native_handle()->cert_store, itmp->x509);
+					X509_STORE_add_cert(SSL_CTX_get_cert_store(native_handle()), itmp->x509);
 					count++;
 				}
 
 				if (itmp->crl)
 				{
-					X509_STORE_add_crl(native_handle()->cert_store, itmp->crl);
+					X509_STORE_add_crl(SSL_CTX_get_cert_store(native_handle()), itmp->crl);
 					count++;
 				}
 			}
