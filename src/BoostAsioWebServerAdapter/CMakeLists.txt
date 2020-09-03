@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.2)
 
 # Find external dependencides
-find_package(boost)
+set(BOOST_PACKAGE_NAME boost)
+find_package(${BOOST_PACKAGE_NAME})
+if (NOT TARGET ${BOOST_PACKAGE_NAME}::${BOOST_PACKAGE_NAME})
+    set(BOOST_PACKAGE_NAME Boost)
+    find_package(${BOOST_PACKAGE_NAME})
+endif()
+
 find_package(OpenSSL)
 find_package(WebServerAdapterInterface)
 
@@ -17,7 +23,7 @@ set(BOOST_ASIO_WEB_SERVER_ADAPTER BoostAsioWebServerAdapter)
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_SRC "*.cpp")
 file(GLOB_RECURSE BOOST_ASIO_WEB_SERVER_ADAPTER_HDR "*.h")
 add_library(${BOOST_ASIO_WEB_SERVER_ADAPTER} STATIC ${BOOST_ASIO_WEB_SERVER_ADAPTER_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_HDR})
-target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER} WebServerAdapterInterface::WebServerAdapterInterface boost::boost OpenSSL::OpenSSL)
+target_link_libraries(${BOOST_ASIO_WEB_SERVER_ADAPTER} WebServerAdapterInterface::WebServerAdapterInterface ${BOOST_PACKAGE_NAME}::${BOOST_PACKAGE_NAME} OpenSSL::OpenSSL)
 
 #Configure source groups
 foreach(FILE ${BOOST_ASIO_WEB_SERVER_ADAPTER_SRC} ${BOOST_ASIO_WEB_SERVER_ADAPTER_HDR}) 
