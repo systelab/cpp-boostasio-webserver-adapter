@@ -37,7 +37,7 @@ See [BUILD.md](BUILD.md) document for details.
 
 ## Usage
 
-Initialize this libraryr by creating an instance of the `systelab::web_server::boostasio::ServerFactory` class:
+Initialize this library by creating an instance of the `systelab::web_server::boostasio::ServerFactory` class:
 
 ```cpp
 #include "BoostAsioWebServerAdapter/ServerFactory.h"
