@@ -38,7 +38,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
 
         if self.options.openssl == "1.0.2n":
             self.requires("OpenSSL/1.0.2n@conan/stable")
-        elif self.options.openssl == "1.75.0":
+        elif self.options.openssl == "1.1.1g":
             self.requires("openssl/1.1.1g#58b78c1738d0cff868861e077e707ca4")
             self.requires("zlib/1.2.11")
         else:
