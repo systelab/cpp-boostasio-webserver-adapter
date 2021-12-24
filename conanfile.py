@@ -46,7 +46,7 @@ class BoostAsioWebServerAdapterConan(ConanFile):
             self.requires("zlib/1.2.11")
 
     def build_requirements(self):
-        self.build_requires("WebServerAdapterTestUtilities/1.1.10@systelab/stable")
+        self.build_requires("WebServerAdapterTestUtilities/1.1.12@systelab/stable")
 
         if self.options.gtest == "1.7.0":
             self.build_requires("gtest/1.7.0@systelab/stable")
